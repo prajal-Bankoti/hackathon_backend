@@ -24,16 +24,22 @@ const newToken = (user) => {
 router.post("/register", async (req, res) => {
   let user;
   try {
-    user = await User.findOne({ phone: req.body.phone });
-
+    user = await User.findOne({ email: req.body.email });
+    console.log(user);
     if (user) {
-      return res.status(400).send({ mes: "user alredy in database" });
+      return res.send(user);
     }
-    user = await User.create(req.body);
+    user = await User.create({ 
+      name: req.body.name,
+      email: req.body.email,
+      roles: req.body.roles,
+      phone: req.body.phone,
+      addarCard: req.body.addarCard});
+    console.log(user);
     const token = newToken(user);
-    console.log(token.name)
     return res.send({ user, token });
   } catch (err) {
+    console.log(err);
     return res.status(500).send({ mess: "some thing went wrong" });
   }
 });
@@ -43,10 +49,10 @@ router.post("/register", async (req, res) => {
 router.get("/city", async (req, res) => {
   try {
     let find = req.query.page;
-   // if (find) {
-      let diver1 = await city.find({ city: { $regex: find } });
-      return res.send(diver1);
-   // }
+    // if (find) {
+    let diver1 = await city.find({ city: { $regex: find } });
+    return res.send(diver1);
+    // }
   } catch (err) {
     return res.status(200).send(err.message);
   }
@@ -116,8 +122,20 @@ router.post("/business_diver", async (req, res) => {
 router.post("/business_customer", async (req, res) => {
   try {
     //let user = await User.findById({ _id: req.body.user });
+    //User.findOne({ phone: req.body.phone })
 
-    let customer1 = await customer.create(req.body);
+    const book = await User.findById(req.body.user);
+    console.log(book);
+    let customer1 = await customer.create({
+      route1: req.body.route1,
+      route2: req.body.route2,
+      vehicaleC: req.body.vehicaleC,
+      user: req.body.user,
+      price: req.body.price,
+      material: req.body.price,
+      book: book,
+    });
+
     return res.status(200).send(customer1);
   } catch (err) {
     return res.status(200).send(err.message);
@@ -125,9 +143,11 @@ router.post("/business_customer", async (req, res) => {
 });
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 router.get("/business_diver", async (req, res) => {
   try {
     let diver1 = await diver.find().lean().exec();
+
     return res.send(diver1);
   } catch (err) {
     return res.status(200).send(err.message);
@@ -136,8 +156,31 @@ router.get("/business_diver", async (req, res) => {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 router.get("/business_customer", async (req, res) => {
+  const route1 = req.query.route1;
+  const route2 = req.query.route2;
+  const vehi = +req.query.vehi;
+
   try {
+    if (route1 && route2 && vehi) {
+      console.log(route1, route2, vehi);
+      let customer1 = await customer.find({
+        $and: [
+          { route1: route1 },
+          { route2: route2 },
+          {
+            vehicaleC: {
+              $in: [vehi, vehi - 1, vehi - 2, vehi - 3, vehi - 4, vehi - 5],
+            },
+          },
+        ],
+      });
+      let p = customer1.vehicaleC;
+      console.log(p);
+      return res.send(customer1);
+    }
     let customer1 = await customer.find().lean().exec();
+    let p = customer1.vehicaleC;
+    console.log(p);
     return res.send(customer1);
   } catch (err) {
     return res.status(200).send(err.message);

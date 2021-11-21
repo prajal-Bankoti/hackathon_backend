@@ -8,6 +8,7 @@ const studentSchema = new mongoose.Schema(
     price:{type:Number,required:true},
     vehicaleC: { type: Number, required: true },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
+    book:{type:Object}
 
    
   },

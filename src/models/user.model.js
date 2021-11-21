@@ -7,9 +7,10 @@ const userSchema = new mongoose.Schema(
     email: { type: String  },
     img: { type: String},
     roles: { type: String},
-    phone: { type:String,required:true},
+    phone: { type:String},
     addarCard:{type:String},
     vicNo:{type:String}
+   
   },
   { versionKey: false }
 );
