@@ -24,17 +24,12 @@ const newToken = (user) => {
 router.post("/register", async (req, res) => {
   let user;
   try {
-    user = await User.findOne({ email: req.body.email });
+    user = await User.findOne({ phone: req.body.phone });
     console.log(user);
     if (user) {
       return res.send(user);
     }
-    user = await User.create({ 
-      name: req.body.name,
-      email: req.body.email,
-      roles: req.body.roles,
-      phone: req.body.phone,
-      addarCard: req.body.addarCard});
+    user = await User.create(req.body);
     console.log(user);
     const token = newToken(user);
     return res.send({ user, token });
