@@ -1,20 +1,20 @@
-const mongoose = require("mongoose");
-var bcryptjs = require("bcryptjs");
+// const mongoose = require("mongoose");
+// var bcryptjs = require("bcryptjs");
 
-const userSchema = new mongoose.Schema(
-  {
-    name: { type: String },
-    email: { type: String  },
-    img: { type: String},
-    roles: { type: String},
-    phone: { type:String},
-    addarCard:{type:String},
-    vicNo:{type:String}
+// const userSchema = new mongoose.Schema(
+//   {
+//     name: { type: String },
+//     email: { type: String  },
+//     img: { type: String},
+//     roles: { type: String},
+//     phone: { type:String},
+//     addarCard:{type:String},
+//     vicNo:{type:String}
    
-  },
-  { versionKey: false }
-);
+//   },
+//   { versionKey: false }
+// );
 
-const User = mongoose.model("datauser", userSchema);
+// const User = mongoose.model("datauser", userSchema);
 
-module.exports = User;
+// module.exports = User;
