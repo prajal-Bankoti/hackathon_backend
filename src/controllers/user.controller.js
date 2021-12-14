@@ -41,9 +41,9 @@ const city = require("../models/city.model");
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-router.get("/city", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
-    let find = req.query.page;
+    let find = req.query.page||"a";
     // if (find) {
     let diver1 = await city.find({ city: { $regex: find } });
     return res.send(diver1);
